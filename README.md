@@ -1,5 +1,4 @@
-##1、需要的jar包
-
+## 1、需要的jar包
 spring-aop.jar
 spring-bean.jar
 spring-context.jar
@@ -9,14 +8,14 @@ commons-logging.jar
 spring-expression.jar
 spring-webmvc.jar
 
-##2、第一个springMVC程序（装spring插件）
+## 2、第一个springMVC程序（装spring插件）
 新建 springmvc配置文件
 选择常用的namespce 打勾 aop context  mvc
 
 普通的servlet需要到web.xml中找url-parttern 交给对应的servlet去处理
 
 现在用springmvc 不需要配置的（怎么去定位serlvet呢？）
-####1.配置springmvc自带的servlet
+#### 1.配置springmvc自带的servlet
 （查看源码 需要关联 source（源码）包 不是jar包！！！）
  配置web.xml的servlet，拦截全部请求 交给springmvc处理
  
@@ -52,7 +51,7 @@ spring-webmvc.jar
      --&gt;
 	  &lt;/servlet-mapping&gt;
 	  
-####2.控制机 c   --- 》命名规范  handler 、action、servlet、controller等等
+#### 2.控制机 c   --- 》命名规范  handler 、action、servlet、controller等等
   新建一个class  注解@controller
   
   方法前加@RequestMapping
@@ -65,7 +64,7 @@ spring-webmvc.jar
 	@RequestMapping(value="welcome/abc",method=RequestMethod.POST,params= {"name=zs","age!=23"})强调必须有这个参数且必须为zs ，age不能为23  但是可以为空可以没有
 	@RequestMapping(value="welcome/abc",method=RequestMethod.POST,params= {"name=zs","age!=23","!height"})
 不能有name=height这个属性！！！
-####3.spirngmvc.xml中加自动扫描
+#### 3.spirngmvc.xml中加自动扫描
 &lt;!-- 扫描有注解的包 --&gt;
 
 	&lt;context:component-scan base-package="org.wht.handler"&gt;&lt;/context:component-scan&gt;
@@ -77,7 +76,7 @@ spring-webmvc.jar
 		&lt;property name="prefix" value="/view/"&gt;&lt;/property&gt;
 		&lt;property name="suffix" value=".jsp"&gt;&lt;/property&gt;
 	&lt;/bean&gt;
-####4.建一个view/success.jsp 进行测试
+#### 4.建一个view/success.jsp 进行测试
 
 ant风格请求路径
 ？ 单字符
@@ -179,7 +178,7 @@ restFul风格
 	}
 	
 -----------------------------
-####springmvc 处理逻辑 、流程
+#### springmvc 处理逻辑 、流程
 请求：前端发请求 a -&gt; @RequestMapping("a")
 	处理请求中的参数xyz：
 		@RequestMapping("a")
@@ -197,7 +196,7 @@ restFul风格
 	}
 	 
 --------------------------------------------
-####处理模型数据
+#### 处理模型数据
 如果跳转时需要带数据：V、M, 则可以使用一下方式：
 	数据放在request 作用域：
 		ModelAndView    ModelMap    Map    ModelAndView
@@ -209,15 +208,15 @@ restFul风格
 #### 视图
 InternalResourceView（和JstlView 是父子关系  默认使用 父类 如果发现jsp中发现包含jstl语言 自动强转为 子类JstlView）
 	  JstlView  可以解析jstl 实现国际化操作
-####国际化
+#### 国际化
 不同地区 不同国家 进行不同的显示
 			具体实现国际化的步骤：
-#####a 创建资源文件----文件名格式 --- 
+##### a 创建资源文件----文件名格式 --- 
 base_zh_CN_properties 
 				  		基名_ 语言_地区_properties
 				  		可以省略地区  		
 			i18n_zh_CH_properties
-#####b 配置 在spirngmvc 
+##### b 配置 在spirngmvc 
 	 &lt;!-- 加载国际化文件  找i18n 开头的文件
 	1.将ResourceBundleMessageSource在程序加载时 加入springmvc springmvc在启动时 会自动查找id=messageSource的bean
 	2.如果配置了ResourceBundleMessageSource 则 该类会在程序响应时 介入
@@ -227,7 +226,7 @@ base_zh_CN_properties
 	&lt;/bean&gt;
 	
 --------	
-#####c. 显示
+##### c. 显示
 通过jstl使用国际化
 		需要两个jar  jstl .jar  standard.har
 		通过调整浏览器的语言 可以控制不同的显示 ascii码的转换
@@ -243,7 +242,7 @@ base_zh_CN_properties
 		 &lt;mvc:annotation-driven&gt;&lt;/mvc:annotation-driven&gt;
 这是一个基础配置 ，一般 要用mvc 都要加这句话
 
-####处理请求方式：
+#### 处理请求方式：
 请求转发 变成 重定向 ：  请求转发forward  这样写 不会加前缀后缀 
 									 重定向redirect
 		//return "success"
@@ -251,7 +250,7 @@ base_zh_CN_properties
 		return "redirect:/views/success.jsp";		 
 
 		
-####处理静态资源：
+#### 处理静态资源：
 		 
 		 可以和用户进行交互的资源 为动态资源 例如 天气 等
 		 静态资源 例如图片 123.jpg
@@ -270,7 +269,7 @@ base_zh_CN_properties
   	&lt;url-pattern&gt;/abc&lt;/url-pattern&gt;
 	  &lt;/servlet-mapping&gt;
 	  
-####使用tomcat的Servlet
+#### 使用tomcat的Servlet
    默认的Tomcat的servlet在/conf/web.xml中
    ？？？怎么实现？
 			加两个配置
@@ -278,7 +277,7 @@ base_zh_CN_properties
 	&lt;mvc:default-servlet-handler&gt;&lt;/mvc:default-servlet-handler&gt;
 	&lt;mvc:annotation-driven&gt;&lt;/mvc:annotation-driven&gt;
 	-----------------------------
-####类型转换
+#### 类型转换
 spirngmvc内置的一些类型转换
 		也可以自己创建一个类型转换器：
 #####a: 编写 自定义类型转换器的类（实现 Converter接口）
@@ -296,7 +295,7 @@ spirngmvc内置的一些类型转换
 		return null;
 	}
 }
-#####2.配置
+##### 2.配置
 将MyConverter加入到spirngmvc中
 
 	 &lt;!-- 配置自己的类型转换器 需要3步 --&gt;
@@ -312,7 +311,7 @@ spirngmvc内置的一些类型转换
 	&lt;/bean&gt;
 	&lt;!-- 3.将conversionService注册到 annotation-driven中--&gt;
 	&lt;mvc:annotation-driven conversion-service="conversionService"&gt;&lt;/mvc:annotation-driven&gt;
-#####3.测试
+##### 3.测试
 		@RequestMapping(value = "testConverter")
 		//满足前置条件了   从字符串 转换到 Student 会触发自己写的转换器
 	public String testConverter(@RequestParam("studentInfo") Student student) {
@@ -324,7 +323,7 @@ spirngmvc内置的一些类型转换
 	}
 	
 --------------------------------------
-#####数据格式化---这个包含了  类型转换 的第一个bean
+##### 数据格式化---这个包含了  类型转换 的第一个bean
 	
 springmvc：
 	
@@ -365,12 +364,12 @@ springmvc：
 可以将错误信息result 传到前端jsp 通过jstl（导包）进行显示,	可以放入map
 
 ------------------------------------------------
-#### 数据校验： 用的JSR 303 标准注解  附 博客地址
+####  数据校验： 用的JSR 303 标准注解  附 博客地址
  https://www.cnblogs.com/rocky-AGE-24/p/5245022.html
  还有hibernate validator 相当于JSR303的扩展  附博客地址
  https://blog.csdn.net/danielzhou888/article/details/74740817
 	使用hibernate validator的步骤
-#####1. jar 去mvn下载 
+##### 1. jar 去mvn下载 
  //报错noclassdefound 还有NoSuchMethod..NoSuchClass 一般就是少jar包 相依赖的jar版本要一致 要兼容
 		Hibernate-validator.jar（版本5.x 会和 validation-api.-1.1.0jar冲突）
 		classmate.jar
@@ -378,11 +377,11 @@ springmvc：
 		validation-api.jar
 		Hibernate-validator-annotation-processor.jar
 		报错 NoClassDeFound  一般是缺失jar 或者 是jar包的版本不兼容了  需要更替其他版本
-#####2.配置 spirngmvc.xml
+##### 2.配置 spirngmvc.xml
 			&lt;mvc:annotation-driven&gt;&lt;/mvc:annotation-driven&gt;
 此时mvc:annotation-driven的作用：要实现hibernate validator、JSR 303 或其他各种校验，必须实现springmvc提供的一个接口ValidatorFactory
 			springmvc以及把这个接口实现了  LocalValidatorFactoryBean（ValidatorFactory是标准实现类），该注解会在springmvc容器中自动加载这个实现类，实现数据校验
-#####3.使用注解
+##### 3.使用注解
 	eg：1.@Past  在model实体的Date类型属性前
 			2.在Controller类中 给校验 的 对象加 @Valid
 			会显示错误
@@ -390,7 +389,7 @@ springmvc：
 
 ------------------------------------------------
 
-#### Ajax请求Springmvc 并返回json格式数据
+####  Ajax请求Springmvc 并返回json格式数据
  需要jar包 jackson-annotations.jar
 					jackson-core.jar
 					jackson-databind.jar
@@ -434,22 +433,22 @@ springmvc：
 成功接收数据
 
 -----------------------------------------------------
-####springmvc实现文件上传，和servlet本质一样 只是简化了
+#### springmvc实现文件上传，和servlet本质一样 只是简化了
  jar 包
   commons-fileuload.jar 
   commons-io.jar
   
 前提条件：必须实现MultiparResolver接口  实现类springmvc已经提供CommonsMultipartResolver
 具体步骤：直接使用pringmvc已经提供CommonsMultipartResolver的类实现上传
-#####a.导包
-#####b.配置  CommonsMultipartResolver加入ioc容器
+##### a.导包
+##### b.配置  CommonsMultipartResolver加入ioc容器
 	&lt;!-- 文件上传所需的CommonsMultipartResolver,id值固定写法 Spring初始化 会寻找该id 并加入ioc--&gt;
 	&lt;bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"&gt;
 		&lt;property name="defaultEncoding" value="UTF-8"&gt;&lt;/property&gt;
 		&lt;!-- 102400  单位是字节kb  =100M  单个文件最大体积   -1 表示无限制 --&gt;
 		&lt;property name="maxUploadSize" value="102400"&gt;&lt;/property&gt;
 	&lt;/bean&gt;
-#####3.处理方法
+##### 3.处理方法
 两种
 
 	//1  处理文件上传 ---上传到本地路径
@@ -508,13 +507,13 @@ springmvc：
     }
    
    -----------------------------------------
-####配置拦截器（原理同过滤器）（拦截器链）
+#### 配置拦截器（原理同过滤器）（拦截器链）
 
-#####1.springmvc 必须实现一个HandlerInterceptor接口 有三个方法
+##### 1.springmvc 必须实现一个HandlerInterceptor接口 有三个方法
   preHandle 请求时拦截
 	   postHandle  响应时拦截
 	   afterCompletion  渲染完毕后拦截
-#####2.配置到springmvc.xml中
+##### 2.配置到springmvc.xml中
 	 
 		&lt;!-- 配置拦截器 写在上边  --&gt;
 	&lt;mvc:interceptors&gt;
@@ -527,15 +526,15 @@ springmvc：
 			&lt;bean class="org.wht.interceptor.MyInterceptor"&gt;&lt;/bean&gt;
 		&lt;/mvc:interceptor&gt;
 	&lt;/mvc:interceptors&gt;
-#####3. 多个拦截器 
+##### 3. 多个拦截器 
  顺序 preHandle1 preHandle2  进去处理方法 postHandle2 postHandle1  				afterCompletion2 afterCompletion1
 		
 ------------------------------------------------
-####异常处理：
+#### 异常处理：
  SpringMVC：HandlerExceptionResolver接口
 		该接口的每一个实现类都是一种异常处理的方式：
 		 ExceptionHandlerExceptionResolver实现类提供了注解@ExceptionHandler
-#####A.实现捕获异常：
+##### A.实现捕获异常：
 
 	@RequestMapping("testExceptionHandler2")
 	public String testExceptionHandler2() {
@@ -565,9 +564,9 @@ springmvc：
 	 //annotations(), basePackageClasses(), basePackages() 方法定制用于选择控制器子集
       // 专门处理异常 可以处理任何类中的异常  Spring能扫描到的地方。就可以实现全局异常的回调
 
-#####B .  用到ResponseStatusExceptionResolver   异常状态的提示 提供该注解@ResponseStatus
+##### B .  用到ResponseStatusExceptionResolver   异常状态的提示 提供该注解@ResponseStatus
    自定义异常显示页面	改变前端错误页面的 404 nofound 之类的信息
-######1.   创建一个异常类（继承Exception）
+###### 1.   创建一个异常类（继承Exception）
  加类注解
 	 
 	 @ResponseStatus(value=HttpStatus.FORBIDDEN,reason="数组越界啦！！！")	 
@@ -575,7 +574,7 @@ springmvc：
 
 	throw new MyArrayIndexOutofBoundsException(); // 创建一个异常
 
-######2.   也可以加在方法前
+###### 2.   也可以加在方法前
 
 	  @RequestMapping(value = "testMyException2") // throws 抛出去
 	public String testMyException2(@RequestParam("i") Integer i) {
@@ -592,7 +591,7 @@ springmvc：
 	public String testResponseStatus(){
 		return "success";
 	}
-######3. 异常处理的实现类 DefaultHandlerExceptionResolver--spring默认实现的一些异常类
+###### 3. 异常处理的实现类 DefaultHandlerExceptionResolver--spring默认实现的一些异常类
 默认处理   例如：HTTP Status 405 – Method Not Allowed ....默认添加的一些异常处理
 		还有....
 	
@@ -608,7 +607,7 @@ springmvc：
 		 * @see #handleMissingServletRequestParameter
 		 * @see #handleMissingServletRequestPartException
 		 * @see #handleBindException
-######4. 通过配置，来实现异常处理 
+###### 4. 通过配置，来实现异常处理 
  SimpleMappingExceptionResolver
 	
 	&lt;!--SimpleMappingExceptionResolver  (这个是全局的 ， 优先级没有类异常处理 高)以配置的方式处理异常  --&gt;
