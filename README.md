@@ -77,12 +77,12 @@ spring-webmvc.jar
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 4.建一个view/success.jsp 进行测试
--------------------------------------
+
 ant风格请求路径
 ？单字符
-*任意个字符 0个或多个
-**任意目录
-----------------------------------------
+ * 任意个字符 0个或多个
+ ** 任意目录
+
 restFul风格
 可以用同一个mapping 通过不同的request请求方法 跳转不同的方法中
 需要配置 filter
@@ -115,26 +115,26 @@ restFul风格
 	对应handler层
 	@RequestMapping(value="testRest/{id}",method=RequestMethod.POST)
 	public String testPost(@PathVariable("id") Integer id) {
-		System.out.println("*****post增id："+id);
+		System.out.println("***** post增id："+id);
 		//调service增删改查
 		return "success";
 	}
 	@RequestMapping(value="testRest/{id}",method=RequestMethod.PUT)
 	//@ResponseBody()
 	public String testPut(@PathVariable("id") Integer id) {
-		System.out.println("*****put改id："+id);
+		System.out.println("***** put改id："+id);
 		//调service增删改查
 		return "success";
 	}
 	@RequestMapping(value="testRest/{id}",method=RequestMethod.GET)
 	public String testGet(@PathVariable("id") Integer id) {
-		System.out.println("*****get查id："+id);
+		System.out.println("***** get查id："+id);
 		//调service增删改查
 		return "success";
 	}
 	@RequestMapping(value="testRest/{id}",method=RequestMethod.DELETE)
 	public String testDelete(@PathVariable("id") Integer id) {
-		System.out.println("*****delete删id："+id);
+		System.out.println("***** delete删id："+id);
 		//调service增删改查
 		return "success";
 	}
@@ -142,66 +142,51 @@ restFul风格
 	 delete|put失败的解决方法
 	三种简单处理的办法！ 第一：tomcat换到7.0以及以下版本 
 	 第二：请求先转给一个Controller,再返回jsp页面  
-	 第三种：在你的success页面头部文件将 <%@ 			       pagelanguage="java"contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true"%> 多加一句话：isErrorPage设置为true，默认为false
-
-------------------------------------------------
+	 第三种：在你的success页面头部文件将 <%@pagelanguage="java"contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true"%> 多加一句话：isErrorPage设置为true，默认为false
 	 表单传值
 	 <form action="Handler/testParam" method="get">
 		name<input name="uname">
-		<!-- age<input name="uage"> --><!-- 能多不能少 -->
+		<!-- age<input name="uage">  能多不能少 -->
 		<input type="submit" value="提交" >
-	</form>
-	
-		@RequestMapping(value="testParam")
+	</form>	
+	@RequestMapping(value="testParam")
 	public String testParam(@RequestParam("uname") String name,@RequestParam(value="uage",required=false,defaultValue="23") Integer age) {
 		//等价于String name = request.getParamter("uname");
-		System.out.println("*****param获取表单的值uname："+name+age);
+		System.out.println("***   param 获取表单的值 uname："+name+age);
 		return "success";
-	}
-	 
-	 ------------------------
-	 @RequestHeader("Accept-Language")取请求头信息  写key就可以
-	 
+	} 
+	 @RequestHeader("Accept-Language")取请求头信息  写key就可以	 
 	 @CookieValue
 	 （前置知识：服务端在接受客户端第一次请求时，会给客户端分配一个session
-	 该session包含一个sessionid    并且服务端会在第一次响应客户端时，将该sessionid赋值给JSESSIONID并传递给客户端的cookie中）
-	 
+	 该session包含一个sessionid    并且服务端会在第一次响应客户端时，将该sessionid赋值给JSESSIONID并传递给客户端的cookie中	 
 	 @RequestMapping(value="testCookieValue")
 	public String testCookieValue(@CookieValue("JSESSIONID") String jsessionid) {
 		//等价于String name = request.getParamter("uname");
-		System.out.println("*****获取JSESSIONID："+jsessionid);
+		System.out.println("*** 获取JSESSIONID："+jsessionid);
 		return "success";
-	}
-	
-	-----------------------------
+	}	
 	springmvc 处理逻辑 、流程
 	请求：前端发请求 a -> @RequestMapping("a")
 	处理请求中的参数xyz：
 		@RequestMapping("a")
-		public String aa(@Xxx注解("xyz") String xyz){
-		
-		return ....
+		public String aa(@Xxx注解("xyz") String xyz){		
+	return ....
 		}
 	使用对象（实体类）接受请求参数
-	只要form表单的name和实体属性名一致 即可
-	
+	只要form表单的name和实体属性名一致 即可	
 	实现原生servlet 只需要在参数中写	
 	@RequestMapping(value = "testServletAPI")
 	public String testServletAPI(HttpServletRequest request,HttpServletResponse response) {//student的属性必须和form表单中name属性一致，支持级联
 		System.out.println(request);
 		return "success";
 	}
-	 
-	--------------------------------------------
 	处理模型数据
 	如果跳转时需要带数据：V、M, 则可以使用一下方式：
 	数据放在request 作用域：
 		ModelAndView    ModelMap    Map    ModelAndView
 	如何将数据放在session中？ 加注解@SessionAttributes 在类前
-	
 	  @ModelAttribute  经常在更新时使用
 	  默认先调用 再进入相应方法  会覆盖
-	  ---------------------
 	  视图
 	  InternalResourceView（和JstlView 是父子关系  默认使用 父类 如果发现jsp中发现包含jstl语言 自动强转为 子类JstlView）
 	  JstlView  可以解析jstl 实现国际化操作
@@ -211,49 +196,39 @@ restFul风格
 				  		base_zh_CN_properties 
 				  		基名_ 语言_地区_properties
 				  		可以省略地区
-				  		
 				  		i18n_zh_CH_properties
 				  b 配置 在spirngmvc 
-				  <!-- 加载国际化文件  找i18n 开头的文件
+	<!-- 加载国际化文件  找i18n 开头的文件
 	1.将ResourceBundleMessageSource在程序加载时 加入springmvc springmvc在启动时 会自动查找id=messageSource的bean
 	2.如果配置了ResourceBundleMessageSource 则 该类会在程序响应时 介入
 	-->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="i18n"></property>
 	</bean>
-					c. 显示
-					  通过jstl使用国际化
-					    需要两个jar  jstl .jar  standard.har
-					    
-					    通过调整浏览器的语言 可以控制不同的显示 ascii码的转换
+				  c. 显示
+					通过jstl使用国际化
+					需要两个jar  jstl .jar  standard.jar					    
+	通过调整浏览器的语言 可以控制不同的显示 ascii码的转换
 	  视图解析器
-	  InternalResourceViewResolver
-	  
+	  InternalResourceViewResolver	  
 	  要解析视图 之前必须通过controller 现在 可以通过一个springMVc标签替代
 	  <mvc：view-controller path="Handler/welcome" view-name="success"/>
-	  如果controller中也有 相同的方法  都会屏蔽掉controller 层的requestmapping
-	  
+	  如果controller中也有 相同的方法  都会屏蔽掉controller 层的requestmapping  
 	  如果需要共存  需要加 注解 ： <mvc:annotation-driven></mvc:annotation-driven>
-		这是一个基础配置 ，一般 要用mvc 都要加这句话
-		
-		
-		------------------------
-		处理请求方式：
-请求转发 变成 重定向 ：  请求转发forward  这样写 不会加前缀后缀 
-									 重定向redirect
-				//return "success"
+	这是一个基础配置 ，一般 要用mvc 都要加这句话	 
+	处理请求方式：	
+        请求转发 变成 重定向 ：  请求转发forward  这样写 不会加前缀后缀 
+		重定向redirect
+		//return "success"
 		//return "forward:/views/success.jsp";
 		return "redirect:/views/success.jsp";		 
-		------------------------------	 ----
-		
-		处理静态资源：
-		 
+		------------------------------
+	处理静态资源： 
 		 可以和用户进行交互的资源 为动态资源 例如 天气 等
 		 静态资源 例如图片 123.jpg
 		   但是直接访问 404  因为 会被web.xml配置的 / 拦截 进入 springDispatcherServlet 交给 了springmvc 找对应的RequestMapping("123.jpg")
 		   所以404
-		   
-		   解决方法：
+	解决方法：
 		   如果需要springmvc处理 则交给 RequestMapping处理
 		   如果不需要 则交给tomcat默认的servlet 去处理 如果有 对应请求拦截 则交给相应的servlet去处理
 		   <servlet>
@@ -266,20 +241,17 @@ restFul风格
   </servlet-mapping>
    默认的Tomcat的servlet在/conf/web.xml中
    ？？？怎么实现？
-			加两个配置 <mvc:default-servlet-handler></mvc:default-servlet-handler>
-<mvc:annotation-driven></mvc:annotation-driven>
-	-----------------------------
+	加两个配置 <mvc:default-servlet-handler></mvc:default-servlet-handler>
+                  <mvc:annotation-driven></mvc:annotation-driven>
 	类型转换
 		spirngmvc内置的一些类型转换
 		也可以自己创建一个类型转换器：
-			a: 编写 自定义类型转换器的类（实现 Converter接口）
-public class MyConverter implements Converter<String, Student>{
-
+	a: 编写 自定义类型转换器的类（实现 Converter接口）
+      public class MyConverter implements Converter<String, Student>{
 	@Override
 	public Student convert(String source) {//source 是一个字符串 2-zs-23
 		//接收前端传来的字符串
 		String[] studentStrArr = source.split("-");		
-		
 		Student student = new Student();
 		student.setId(Integer.parseInt(studentStrArr[0]));
 		student.setName(studentStrArr[1]);
@@ -287,9 +259,9 @@ public class MyConverter implements Converter<String, Student>{
 		return null;
 	}
 }
-				2.配置
-				 将MyConverter加入到spirngmvc中
-				 <!-- 配置自己的类型转换器 需要3步 -->
+	 2.配置
+		 将MyConverter加入到spirngmvc中
+	 <!-- 配置自己的类型转换器 需要3步 -->
 	<!-- 1.将自定义转换器 纳入SpringIOC容器 -->
 	<bean id="myConverter" class="org.wht.converter.MyConverter"></bean>
 	<!-- 2.将myConverter 纳入SpringMVC提供的转换器Bean -->
@@ -302,20 +274,17 @@ public class MyConverter implements Converter<String, Student>{
 	</bean>
 	<!-- 3.将conversionService注册到 annotation-driven中-->
 	<mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
-		3.测试
+	3.测试
 		@RequestMapping(value = "testConverter")
 		//满足前置条件了   从字符串 转换到 Student 会触发自己写的转换器
 	public String testConverter(@RequestParam("studentInfo") Student student) {//前端接收字符串  3-zs-23
-		System.out.println("*****字符串 转 学生信息 ：" + student.getId()+"-"+student.getName()+"-"+student.getAge());
+		System.out.println("*** 字符串 转 学生信息 ：" + student.getId()+"-"+student.getName()+"-"+student.getAge());
 		return "success";
 	}
-	---------------------------------------
 	数据格式化，这个包含了  类型转换 的第一个bean
-	
 	springmvc：
 	<!-- 	FormattingConversionServiceFactoryBean这个包含了ConversionServiceFactoryBean
 	所有要用数据格式化和类型转换，只需要配置这一个依赖即可
-	
 	这个是开启了 数据格式化的注解
 	 -->
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
@@ -325,25 +294,22 @@ public class MyConverter implements Converter<String, Student>{
 			</set>
 		</property>
 	</bean> 
-	
 	用注解放在model层对应实体属性上
 		@NumberFormat(pattern="###.#")//这个是控制前端输入的格式 必须为###.#  然后就可转换成int型	  ###，# 逗号也行		@DateTimeFormat(pattern="yyyy-MM-dd")//这个是控制前端输入的格式 必须为yyyy-MM-dd  然后就可以转换成Date类型
 .....
   @RequestMapping(value = "testFormatDateAndNum")
 	public String testFormatDateAndNum(Student student,BindingResult result) {//如果格式化报错 ， 错误信息会放入第二个参数中（参数顺序绝对不能改变），相当于try-catch，前端就不会报错 了
-		System.out.println("*****格式化后的 学生信息 ：" + student.getId()+"-"+student.getName()+"-"+student.getAge()+"-"+student.getBirthday());
+		System.out.println("*** 格式化后的 学生信息 ：" + student.getId()+"-"+student.getName()+"-"+student.getAge()+"-"+student.getBirthday());
 		if(result.getErrorCount()>0)
 		{
 			for(FieldError error: result.getFieldErrors()) {
 				System.out.println(error.getDefaultMessage());
-			}
-			
+			}	
 		}
 		return "success";
 	}
-可以将错误信息result 传到前端jsp 通过jstl（导包）进行显示
+        可以将错误信息result 传到前端jsp 通过jstl（导包）进行显示
 	可以放入map
-------------------------------------------------
  数据校验： 用的JSR 303 标准注解  附 博客地址
 			https://www.cnblogs.com/rocky-AGE-24/p/5245022.html
 				还有hibernate validator 相当于JSR303的扩展  附博客地址
@@ -373,8 +339,7 @@ public class MyConverter implements Converter<String, Student>{
 	  需要jar包 jackson-annotations.jar
 					jackson-core.jar
 					jackson-databind.jar
-		
-		@ResponseBody//加了之就可以在ajax中调用json对象了  谁调反馈给谁 集合的话就会自动用js可操作的json数组 不需要手动转换
+	@ResponseBody//加了之就可以在ajax中调用json对象了  谁调反馈给谁 集合的话就会自动用js可操作的json数组 不需要手动转换
 	@RequestMapping(value = "testJson")
 	public List<Student> testJson(){ 
 		//调service层 进行操作
@@ -390,14 +355,13 @@ public class MyConverter implements Converter<String, Student>{
 	}
 	 js
 	 <script type="text/javascript" src="js/jquery-1.4.4.js"></script>
-<script type="text/javascript">
+         <script type="text/javascript">
 	$(document).ready(function(){
 		$("#testJson").click(function(){
 			//通过ajax请求springmvc
 			$.post(
 				"Handler/testJson",//服务器地址
 				 {"name":"zs"},//传值{"name":"zs","age":23}
-				
 				function(result){//服务端处理完毕后的回调函数 是一个List<Student> students ->  result
 					 //之前eval(result)  将json对象变成js能操作的对象
 					//现在在handler层对应方法加@ResponseBody 就可直接操作了 返回的js数组
@@ -489,7 +453,7 @@ b.配置  CommonsMultipartResolver加入ioc容器
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<!-- 指定拦截的目录 基于ant风格 -->
-			<mvc:mapping path="/**"/>
+			<mvc:mapping path=" /** "/>
 			<!-- 指定不拦截的目录  -->
 			<!--   取交集 -->
 			<mvc:exclude-mapping path="/Handler/testUpload1"/>
@@ -582,6 +546,5 @@ B .  用到ResponseStatusExceptionResolver   异常状态的提示 提供该注�
 		</property>
 		<!-- 会将异常放入value中 -->
 		<property name="exceptionAttribute" value="e">
-		
 		</property>
 	</bean>
