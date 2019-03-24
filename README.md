@@ -19,37 +19,37 @@ spring-webmvc.jar
 （查看源码 需要关联 source（源码）包 不是jar包！！！）
  配置web.xml的servlet，拦截全部请求 交给springmvc处理
  
- 	&lt;servlet&gt;
-  	&lt;servlet-name&gt;springDispatcherServlet&lt;/servlet-name&gt;
-  	&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
-	&lt;/servlet&gt;
-	  &lt;servlet-mapping&gt;
-	   &lt;servlet-name&gt;springDispatcherServlet&lt;/servlet-name&gt;
-	   &lt;url-pattern&gt;/&lt;/url-pattern&gt;
-	  &lt;/servlet-mapping&gt;
+ 	<servlet>
+  	<servlet-name>springDispatcherServlet</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	</servlet>
+	  <servlet-mapping>
+	   <servlet-name>springDispatcherServlet</servlet-name>
+	   <url-pattern>/</url-pattern>
+	  </servlet-mapping>
   ------------------完善---------------------
   
-	   &lt;servlet&gt;
-	  	&lt;servlet-name&gt;springDispatcherServlet&lt;/servlet-name&gt;
-	  	&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
-  	&lt;init-param&gt;
-  		&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
-  		&lt;param-value&gt;classpath:springmvc.xml&lt;/param-value&gt;//关联spirng文件
+	   <servlet>
+	  	<servlet-name>springDispatcherServlet</servlet-name>
+	  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<init-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>classpath:springmvc.xml</param-value>//关联spirng文件
   		//也可 把springmvc文件直接放大web-inf下边  需要重命名--springDispatcherServlet-servlet.xml
-  	&lt;/init-param&gt;
-  	&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;//自启
-	  &lt;/servlet&gt;
-	  &lt;servlet-mapping&gt;
-	   &lt;servlet-name&gt;springDispatcherServlet&lt;/servlet-name&gt;
-	   &lt;url-pattern&gt;/&lt;/url-pattern&gt;
-    &lt;!-- 斜杠表示拦截一切请求  也可以拦截特定请求
-     &lt;url-pattern&gt;/user&lt;/url-pattern&gt;
-      &lt;url-pattern&gt;/user/aaaa.action&lt;/url-pattern&gt;
-       &lt;url-pattern&gt;.action&lt;/url-pattern&gt;   这样配置可以兼容普通servlet 	       	  
+  	</init-param>
+  	<load-on-startup>1</load-on-startup>//自启
+	  </servlet>
+	  <servlet-mapping>
+	   <servlet-name>springDispatcherServlet</servlet-name>
+	   <url-pattern>/</url-pattern>
+    <!-- 斜杠表示拦截一切请求  也可以拦截特定请求
+     <url-pattern>/user</url-pattern>
+      <url-pattern>/user/aaaa.action</url-pattern>
+       <url-pattern>.action</url-pattern>   这样配置可以兼容普通servlet 	       	  
        需要springmvc处理就加.action后缀找@requestmapping 
         默认不加就发送到普通servlet找url-mapping 或者 @webservlet
-     --&gt;
-	  &lt;/servlet-mapping&gt;
+     -->
+	  </servlet-mapping>
 	  
 #### 2.控制机 c   --- 》命名规范  handler 、action、servlet、controller等等
   新建一个class  注解@controller
@@ -65,17 +65,17 @@ spring-webmvc.jar
 	@RequestMapping(value="welcome/abc",method=RequestMethod.POST,params= {"name=zs","age!=23","!height"})
 不能有name=height这个属性！！！
 #### 3.spirngmvc.xml中加自动扫描
-&lt;!-- 扫描有注解的包 --&gt;
+<!-- 扫描有注解的包 -->
 
-	&lt;context:component-scan base-package="org.wht.handler"&gt;&lt;/context:component-scan&gt;
+	<context:component-scan base-package="org.wht.handler"></context:component-scan>
 
-	&lt;!-- 配置视图解析器(InternalResourceViewResolver)
+	<!-- 配置视图解析器(InternalResourceViewResolver)
 		id 为了别的调用 这个不需要 id也就不需要写
-	 --&gt;
-	&lt;bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"&gt;
-		&lt;property name="prefix" value="/view/"&gt;&lt;/property&gt;
-		&lt;property name="suffix" value=".jsp"&gt;&lt;/property&gt;
-	&lt;/bean&gt;
+	 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/view/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
 #### 4.建一个view/success.jsp 进行测试
 
 ant风格请求路径
@@ -87,32 +87,32 @@ restFul风格
 可以用同一个mapping 通过不同的request请求方法 跳转不同的方法中
 需要配置 filter
 
-	  &lt;!-- 增加 HiddenHttpMethodFilter 过滤器：目的是给普通浏览器增加 put/delete请求方法--&gt;
-	  &lt;filter&gt;
-	  	&lt;filter-name&gt;HiddenHttpMethodFilter&lt;/filter-name&gt;
-  	&lt;filter-class&gt;org.springframework.web.filter.HiddenHttpMethodFilter&lt;/filter-class&gt;
-	  &lt;/filter&gt;
-	  &lt;filter-mapping&gt;
-  	&lt;filter-name&gt;HiddenHttpMethodFilter&lt;/filter-name&gt;
-  	&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-	  &lt;/filter-mapping&gt;
+	  <!-- 增加 HiddenHttpMethodFilter 过滤器：目的是给普通浏览器增加 put/delete请求方法-->
+	  <filter>
+	  	<filter-name>HiddenHttpMethodFilter</filter-name>
+  	<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	  </filter>
+	  <filter-mapping>
+  	<filter-name>HiddenHttpMethodFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+	  </filter-mapping>
   
   通过表单的hidden属性 name=_method  value的值需要大写  
  
-	  &lt;form action="Handler/testRest/1234" method="post"&gt;
-			&lt;input type="submit" value="增" &gt;
-	&lt;/form&gt;
-	&lt;form action="Handler/testRest/1234" =&gt;
-		&lt;input type="hidden" name="_method" value="DELETE"/&gt;&lt;!--delete是枚举值 大写  --&gt;
-		&lt;input type="submit" value="删" &gt;
-	&lt;/form&gt;
-	&lt;form action="Handler/testRest/1234" method="post"&gt;
-		&lt;input type="hidden" name="_method" value="PUT"/&gt;
-		&lt;input type="submit" value="改" &gt;
-	&lt;/form&gt;
-	&lt;form action="Handler/testRest/1234" method="get"&gt;
-		&lt;input type="submit" value="查" &gt;
-	&lt;/form&gt;
+	  <form action="Handler/testRest/1234" method="post">
+			<input type="submit" value="增" >
+	</form>
+	<form action="Handler/testRest/1234" =>
+		<input type="hidden" name="_method" value="DELETE"/><!--delete是枚举值 大写  -->
+		<input type="submit" value="删" >
+	</form>
+	<form action="Handler/testRest/1234" method="post">
+		<input type="hidden" name="_method" value="PUT"/>
+		<input type="submit" value="改" >
+	</form>
+	<form action="Handler/testRest/1234" method="get">
+		<input type="submit" value="查" >
+	</form>
 	
 --------------------------------------
 	//对应handler层
@@ -145,15 +145,15 @@ restFul风格
 	 delete|put失败的解决方法
 	三种简单处理的办法！ 第一：tomcat换到7.0以及以下版本 
 	 第二：请求先转给一个Controller,再返回jsp页面  
-	 第三种：在你的success页面头部文件将 &lt;%@ 			       pagelanguage="java"contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true"%&gt; 多加一句话：isErrorPage设置为true，默认为false
+	 第三种：在你的success页面头部文件将 <%@ 			       pagelanguage="java"contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true"%> 多加一句话：isErrorPage设置为true，默认为false
 
 ------------------------------------------------
 	 表单传值
-	 &lt;form action="Handler/testParam" method="get"&gt;
-		name&lt;input name="uname"&gt;
-		&lt;!-- age&lt;input name="uage"&gt; --&gt;&lt;!-- 能多不能少 --&gt;
-		&lt;input type="submit" value="提交" &gt;
-	&lt;/form&gt;
+	 <form action="Handler/testParam" method="get">
+		name<input name="uname">
+		<!-- age<input name="uage"> --><!-- 能多不能少 -->
+		<input type="submit" value="提交" >
+	</form>
 	
 -------------
 	@RequestMapping(value="testParam")
@@ -179,7 +179,7 @@ restFul风格
 	
 -----------------------------
 #### springmvc 处理逻辑 、流程
-请求：前端发请求 a -&gt; @RequestMapping("a")
+请求：前端发请求 a -> @RequestMapping("a")
 	处理请求中的参数xyz：
 		@RequestMapping("a")
 		public String aa(@Xxx注解("xyz") String xyz){
@@ -217,13 +217,13 @@ base_zh_CN_properties
 				  		可以省略地区  		
 			i18n_zh_CH_properties
 ##### b 配置 在spirngmvc 
-	 &lt;!-- 加载国际化文件  找i18n 开头的文件
+	 <!-- 加载国际化文件  找i18n 开头的文件
 	1.将ResourceBundleMessageSource在程序加载时 加入springmvc springmvc在启动时 会自动查找id=messageSource的bean
 	2.如果配置了ResourceBundleMessageSource 则 该类会在程序响应时 介入
-	--&gt;
-	&lt;bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"&gt;
-		&lt;property name="basename" value="i18n"&gt;&lt;/property&gt;
-	&lt;/bean&gt;
+	-->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="i18n"></property>
+	</bean>
 	
 --------	
 ##### c. 显示
@@ -234,12 +234,12 @@ base_zh_CN_properties
 	  InternalResourceViewResolver
 		  要解析视图 之前必须通过controller 现在 可以通过一个springMVc标签替代
 	
-	  &lt;mvc：view-controller path="Handler/welcome" view-name="success"/&gt;
+	  <mvc：view-controller path="Handler/welcome" view-name="success"/>
 	  
  如果controller中也有 相同的方法  都会屏蔽掉controller 层的requestmapping
 如果需要共存  需要加注解 ：
 
-		 &lt;mvc:annotation-driven&gt;&lt;/mvc:annotation-driven&gt;
+		 <mvc:annotation-driven></mvc:annotation-driven>
 这是一个基础配置 ，一般 要用mvc 都要加这句话
 
 #### 处理请求方式：
@@ -260,28 +260,28 @@ base_zh_CN_properties
 		   解决方法：
 		   如果需要springmvc处理 则交给 RequestMapping处理
 		   如果不需要 则交给tomcat默认的servlet 去处理 如果有 对应请求拦截 则交给相应的servlet去处理
-		   &lt;servlet&gt;
-  	&lt;servlet-name&gt;abc&lt;/servlet-name&gt;
-  	&lt;servlet-class&gt;xx.xx.abc&lt;/servlet-class&gt;
-	  &lt;/servlet&gt;
-	  &lt;servlet-mapping&gt;
-  	&lt;servlet-name&gt;abc&lt;/servlet-name&gt;
-  	&lt;url-pattern&gt;/abc&lt;/url-pattern&gt;
-	  &lt;/servlet-mapping&gt;
+		   <servlet>
+  	<servlet-name>abc</servlet-name>
+  	<servlet-class>xx.xx.abc</servlet-class>
+	  </servlet>
+	  <servlet-mapping>
+  	<servlet-name>abc</servlet-name>
+  	<url-pattern>/abc</url-pattern>
+	  </servlet-mapping>
 	  
 #### 使用tomcat的Servlet
    默认的Tomcat的servlet在/conf/web.xml中
    ？？？怎么实现？
 			加两个配置
 			
-	&lt;mvc:default-servlet-handler&gt;&lt;/mvc:default-servlet-handler&gt;
-	&lt;mvc:annotation-driven&gt;&lt;/mvc:annotation-driven&gt;
+	<mvc:default-servlet-handler></mvc:default-servlet-handler>
+	<mvc:annotation-driven></mvc:annotation-driven>
 	-----------------------------
 #### 类型转换
 spirngmvc内置的一些类型转换
 		也可以自己创建一个类型转换器：
 #####a: 编写 自定义类型转换器的类（实现 Converter接口）
-	public class MyConverter implements Converter&lt;String, Student&gt;{
+	public class MyConverter implements Converter<String, Student>{
 	@Override
 	public Student convert(String source) {
 	//source 是一个字符串 2-zs-23
@@ -298,19 +298,19 @@ spirngmvc内置的一些类型转换
 ##### 2.配置
 将MyConverter加入到spirngmvc中
 
-	 &lt;!-- 配置自己的类型转换器 需要3步 --&gt;
-	&lt;!-- 1.将自定义转换器 纳入SpringIOC容器 --&gt;
-	&lt;bean id="myConverter" class="org.wht.converter.MyConverter"&gt;&lt;/bean&gt;
-	&lt;!-- 2.将myConverter 纳入SpringMVC提供的转换器Bean --&gt;
-	&lt;bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean"&gt;
-		&lt;property name="converters"&gt;
-			&lt;set&gt;
-				&lt;ref bean="myConverter"/&gt;
-			&lt;/set&gt;
-		&lt;/property&gt;
-	&lt;/bean&gt;
-	&lt;!-- 3.将conversionService注册到 annotation-driven中--&gt;
-	&lt;mvc:annotation-driven conversion-service="conversionService"&gt;&lt;/mvc:annotation-driven&gt;
+	 <!-- 配置自己的类型转换器 需要3步 -->
+	<!-- 1.将自定义转换器 纳入SpringIOC容器 -->
+	<bean id="myConverter" class="org.wht.converter.MyConverter"></bean>
+	<!-- 2.将myConverter 纳入SpringMVC提供的转换器Bean -->
+	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<ref bean="myConverter"/>
+			</set>
+		</property>
+	</bean>
+	<!-- 3.将conversionService注册到 annotation-driven中-->
+	<mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
 ##### 3.测试
 		@RequestMapping(value = "testConverter")
 		//满足前置条件了   从字符串 转换到 Student 会触发自己写的转换器
@@ -327,18 +327,18 @@ spirngmvc内置的一些类型转换
 	
 springmvc：
 	
-	&lt;!-- 	FormattingConversionServiceFactoryBean这个包含了ConversionServiceFactoryBean
+	<!-- 	FormattingConversionServiceFactoryBean这个包含了ConversionServiceFactoryBean
 	所有要用数据格式化和类型转换，只需要配置这一个依赖即可
 	
 	这个是开启了 数据格式化的注解
-	 --&gt;
-	&lt;bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"&gt;
-		&lt;property name="converters"&gt;
-			&lt;set&gt;
-				&lt;ref bean="myConverter"/&gt;
-			&lt;/set&gt;
-		&lt;/property&gt;
-	&lt;/bean&gt; 
+	 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<ref bean="myConverter"/>
+			</set>
+		</property>
+	</bean> 
 	
 ---
 用注解放在model层对应实体属性上
@@ -352,7 +352,7 @@ springmvc：
 		student.getId()+"-"+student.getName()+"-"+
 		student.getAge()+"-"+student.getBirthday());
 		
-		if(result.getErrorCount()&gt;0)
+		if(result.getErrorCount()>0)
 		{
 			for(FieldError error: result.getFieldErrors()) {
 				System.out.println(error.getDefaultMessage());
@@ -378,7 +378,7 @@ springmvc：
 		Hibernate-validator-annotation-processor.jar
 		报错 NoClassDeFound  一般是缺失jar 或者 是jar包的版本不兼容了  需要更替其他版本
 ##### 2.配置 spirngmvc.xml
-			&lt;mvc:annotation-driven&gt;&lt;/mvc:annotation-driven&gt;
+			<mvc:annotation-driven></mvc:annotation-driven>
 此时mvc:annotation-driven的作用：要实现hibernate validator、JSR 303 或其他各种校验，必须实现springmvc提供的一个接口ValidatorFactory
 			springmvc以及把这个接口实现了  LocalValidatorFactoryBean（ValidatorFactory是标准实现类），该注解会在springmvc容器中自动加载这个实现类，实现数据校验
 ##### 3.使用注解
@@ -396,10 +396,10 @@ springmvc：
 		
 		@ResponseBody//加了之就可以在ajax中调用json对象了  谁调反馈给谁 集合的话就会自动用js可操作的json数组 不需要手动转换
 	@RequestMapping(value = "testJson")
-	public List&lt;Student&gt; testJson(){ 
+	public List<Student> testJson(){ 
 		//调service层 进行操作
 		//假设 查询出一个学生list 下方是模拟
-		List&lt;Student&gt; students = new ArrayList&lt;&gt;();
+		List<Student> students = new ArrayList<>();
 		Student stu1= new Student("zs");
 		Student stu2= new Student("ls");
 		Student stu3= new Student("ww");
@@ -410,8 +410,8 @@ springmvc：
 	}
  js
 	
-	 &lt;script type="text/javascript" src="js/jquery-1.4.4.js"&gt;&lt;/script&gt;
-	&lt;script type="text/javascript"&gt;
+	 <script type="text/javascript" src="js/jquery-1.4.4.js"></script>
+	<script type="text/javascript">
 	$(document).ready(function(){
 		$("#testJson").click(function(){
 			//通过ajax请求springmvc
@@ -419,17 +419,17 @@ springmvc：
 				"Handler/testJson",//服务器地址
 				 {"name":"zs"},//传值{"name":"zs","age":23}
 				
-				function(result){//服务端处理完毕后的回调函数 是一个List&lt;Student&gt; students -&gt;  result
+				function(result){//服务端处理完毕后的回调函数 是一个List<Student> students ->  result
 					 //之前eval(result)  将json对象变成js能操作的对象
 					//现在在handler层对应方法加@ResponseBody 就可直接操作了 返回的js数组
-					 for(var i=0;i&lt;result.length;i++){
+					 for(var i=0;i<result.length;i++){
 						console.log(result[i].name)
 					} 
 				}
 			);	
 		});
 	});
-	&lt;/script&gt; 
+	</script> 
 成功接收数据
 
 -----------------------------------------------------
@@ -442,12 +442,12 @@ springmvc：
 具体步骤：直接使用pringmvc已经提供CommonsMultipartResolver的类实现上传
 ##### a.导包
 ##### b.配置  CommonsMultipartResolver加入ioc容器
-	&lt;!-- 文件上传所需的CommonsMultipartResolver,id值固定写法 Spring初始化 会寻找该id 并加入ioc--&gt;
-	&lt;bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"&gt;
-		&lt;property name="defaultEncoding" value="UTF-8"&gt;&lt;/property&gt;
-		&lt;!-- 102400  单位是字节kb  =100M  单个文件最大体积   -1 表示无限制 --&gt;
-		&lt;property name="maxUploadSize" value="102400"&gt;&lt;/property&gt;
-	&lt;/bean&gt;
+	<!-- 文件上传所需的CommonsMultipartResolver,id值固定写法 Spring初始化 会寻找该id 并加入ioc-->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<!-- 102400  单位是字节kb  =100M  单个文件最大体积   -1 表示无限制 -->
+		<property name="maxUploadSize" value="102400"></property>
+	</bean>
 ##### 3.处理方法
 两种
 
@@ -515,17 +515,17 @@ springmvc：
 	   afterCompletion  渲染完毕后拦截
 ##### 2.配置到springmvc.xml中
 	 
-		&lt;!-- 配置拦截器 写在上边  --&gt;
-	&lt;mvc:interceptors&gt;
-		&lt;mvc:interceptor&gt;
-			&lt;!-- 指定拦截的目录 基于ant风格 --&gt;
-			&lt;mvc:mapping path="/**"/&gt;
-			&lt;!-- 指定不拦截的目录  --&gt;
-			&lt;!--   取交集 --&gt;
-			&lt;mvc:exclude-mapping path="/Handler/testUpload1"/&gt;
-			&lt;bean class="org.wht.interceptor.MyInterceptor"&gt;&lt;/bean&gt;
-		&lt;/mvc:interceptor&gt;
-	&lt;/mvc:interceptors&gt;
+		<!-- 配置拦截器 写在上边  -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- 指定拦截的目录 基于ant风格 -->
+			<mvc:mapping path="/**"/>
+			<!-- 指定不拦截的目录  -->
+			<!--   取交集 -->
+			<mvc:exclude-mapping path="/Handler/testUpload1"/>
+			<bean class="org.wht.interceptor.MyInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 ##### 3. 多个拦截器 
  顺序 preHandle1 preHandle2  进去处理方法 postHandle2 postHandle1  				afterCompletion2 afterCompletion1
 		
@@ -610,23 +610,23 @@ springmvc：
 ###### 4. 通过配置，来实现异常处理 
  SimpleMappingExceptionResolver
 	
-	&lt;!--SimpleMappingExceptionResolver  (这个是全局的 ， 优先级没有类异常处理 高)以配置的方式处理异常  --&gt;
-	&lt;bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"&gt;
-		&lt;property name="exceptionMappings" &gt;
-			&lt;!-- 相当于catch(ArithmeticException e) --&gt;
-			&lt;props&gt;
-				&lt;prop key="java.lang.ArithmeticException"&gt;
-					&lt;!-- 跳转到-error --&gt;
+	<!--SimpleMappingExceptionResolver  (这个是全局的 ， 优先级没有类异常处理 高)以配置的方式处理异常  -->
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings" >
+			<!-- 相当于catch(ArithmeticException e) -->
+			<props>
+				<prop key="java.lang.ArithmeticException">
+					<!-- 跳转到-error -->
 					error2
-				&lt;/prop&gt;
-				&lt;prop key="org.wht.handler.SceondSpringMVCHandler"&gt;
-					&lt;!-- 跳转到-error --&gt;
+				</prop>
+				<prop key="org.wht.handler.SceondSpringMVCHandler">
+					<!-- 跳转到-error -->
 					error2
-				&lt;/prop&gt;
-			&lt;/props&gt;
-		&lt;/property&gt;
-		&lt;!-- 会将异常放入value中 --&gt;
-		&lt;property name="exceptionAttribute" value="e"&gt;
+				</prop>
+			</props>
+		</property>
+		<!-- 会将异常放入value中 -->
+		<property name="exceptionAttribute" value="e">
 		
-		&lt;/property&gt;
-	&lt;/bean&gt;
+		</property>
+	</bean>
